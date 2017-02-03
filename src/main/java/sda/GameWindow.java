@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.IntStream;
 
 public class GameWindow extends JFrame implements ActionListener {
     private static final int BOARD_WIDTH = 3;
@@ -12,8 +13,8 @@ public class GameWindow extends JFrame implements ActionListener {
     private static final int WINDOW_HEIGHT = 600;
     private static final String WINDOW_TITLE = "Kółko i Krzyżyk - Daniel Jawny";
     private JButton[][] gameBoardButtons = new JButton[BOARD_WIDTH][BOARD_HEIGHT];
-    private int markCount;
     private GameLogic gameLogic;
+    private int markCount;
 
     GameWindow() throws HeadlessException {
         markCount = 0;
@@ -31,29 +32,29 @@ public class GameWindow extends JFrame implements ActionListener {
     private void createGameBoardButtons() {
         int gameBoardButtonSize = 90;
         Font buttonFont = new Font("Arial", Font.PLAIN, 50);
-        for (int i = 0; i < gameBoardButtons.length; i++) {
-            for (int j = 0; j < gameBoardButtons[i].length; j++) {
-                gameBoardButtons[i][j] = new JButton();
-                gameBoardButtons[i][j].setLocation(250 + i * gameBoardButtonSize, 100 + j * gameBoardButtonSize);
-                gameBoardButtons[i][j].setSize(gameBoardButtonSize, gameBoardButtonSize);
-                gameBoardButtons[i][j].setFont(buttonFont);
-                gameBoardButtons[i][j].setBackground(new Color(21, 85, 163));
-                gameBoardButtons[i][j].addActionListener(this);
-                add(gameBoardButtons[i][j]);
-            }
-        }
+        IntStream.range(0, gameBoardButtons.length).forEach(i ->
+                IntStream.range(0, gameBoardButtons[i].length).forEach(j -> {
+                    gameBoardButtons[i][j] = new JButton();
+                    gameBoardButtons[i][j].setLocation(250 + i * gameBoardButtonSize, 100 + j * gameBoardButtonSize);
+                    gameBoardButtons[i][j].setSize(gameBoardButtonSize, gameBoardButtonSize);
+                    gameBoardButtons[i][j].setFont(buttonFont);
+                    gameBoardButtons[i][j].setBackground(new Color(21, 85, 163));
+                    gameBoardButtons[i][j].addActionListener(this);
+                    add(gameBoardButtons[i][j]);
+                })
+        );
     }
 
     private void markButton(ActionEvent e, Character mark) {
-        for (int i = 0; i < gameBoardButtons.length; i++) {
-            for (int j = 0; j < gameBoardButtons[i].length; j++) {
-                if (e.getSource() == gameBoardButtons[i][j]) {
-                    gameBoardButtons[i][j].setText(Character.toString(mark));
-                    gameBoardButtons[i][j].setBackground(new Color(49, 74, 122));
-                    gameBoardButtons[i][j].setEnabled(false);
-                }
-            }
-        }
+        IntStream.range(0, gameBoardButtons.length).forEach(i ->
+                IntStream.range(0, gameBoardButtons[i].length).forEach(j -> {
+                    if (e.getSource() == gameBoardButtons[i][j]) {
+                        gameBoardButtons[i][j].setText(Character.toString(mark));
+                        gameBoardButtons[i][j].setBackground(new Color(49, 74, 122));
+                        gameBoardButtons[i][j].setEnabled(false);
+                    }
+                })
+        );
     }
 
     private void showEndDialogs(String messageDialogText) {
@@ -71,11 +72,7 @@ public class GameWindow extends JFrame implements ActionListener {
     }
 
     private Mark chooseMark() {
-        if (markCount % 2 == 0) {
-            return Mark.TIC;
-        } else {
-            return Mark.TOE;
-        }
+        return (markCount % 2 == 0) ? Mark.TIC : Mark.TOE;
     }
 
     @Override
