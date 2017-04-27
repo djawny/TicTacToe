@@ -1,4 +1,7 @@
-package sda;
+package sda.ui;
+
+import sda.model.GameLogic;
+import sda.model.Mark;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +19,7 @@ public class GameWindow extends JFrame implements ActionListener {
     private GameLogic gameLogic;
     private int markCount;
 
-    GameWindow() throws HeadlessException {
+    public GameWindow() throws HeadlessException {
         markCount = 0;
         gameLogic = new GameLogic();
         setLayout(null);

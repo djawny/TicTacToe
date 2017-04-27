@@ -1,4 +1,4 @@
-package sda;
+package sda.model;
 
 import javax.swing.*;
 import java.util.stream.IntStream;

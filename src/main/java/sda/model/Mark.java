@@ -1,4 +1,4 @@
-package sda;
+package sda.model;
 
 public enum Mark {
     TIC('O'), TOE('X');
